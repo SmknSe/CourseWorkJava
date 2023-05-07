@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>User Interface</title>
+</head>
+<body>
+<header class="neo_in">
+    <div style="width: fit-content;">
+        <div class="center">
+            <button class="neo_in" onclick="window.location.href='/'">Home</button>
+        </div>
+    </div>
+    <div id="buttons" class="row" style="gap: 20px;">
+        <div class="center">
+            <button class="neo_in" onclick="window.location.href='/myrecords'">records</button>
+        </div>
+        <div class="center">
+            <button class="neo_in" onclick="window.location.href='/masters'">masters</button>
+        </div>
+        <div class="center">
+            <button class="neo_in" onclick="window.location.href='/services'">services</button>
+        </div>
+        <div class="center">
+            <button class="neo_in" onclick="window.location.href='/logout'">logout</button>
+        </div>
+        <div class="center">
+            <button class="neo_in" onclick="window.location.href='/addRecord'">+</button>
+        </div>
+        <div class="center">
+            <button class="neo_in" onclick="window.location.href='/reviews'">reviews</button>
+        </div>
+    </div>
+</header>
+<main>
+    <div class="center">
+        <h1 class="big_h1">
+            Welcome to our barbershop!<br>
+            U can find all available services using buttons from the header of the page.
+        </h1>
+    </div>
+</main>
+</body>
+<script th:inline="javascript">
+    $(document).ready(function () {
+        $.ajax({
+            url: '/myrole',
+            type: 'GET',
+            success: function (result) {
+                if (result === "ADMIN") {
+                    const new_div = document.createElement('div')
+                    new_div.classList.add("center")
+                    const new_selector = document.createElement('select')
+                    new_selector.classList.add('neo_in')
+                    new_selector.style.paddingLeft = "10px"
+                    new_selector.onchange = function () {
+                        window.location.href = this.value;
+                    }
+                    new_selector.innerHTML = '<option value="" hidden selected>admin</option>' +
+                        '<option class="neo_in" value="/admin">form</option>' +
+                        '<option value="/admin/users">users</option>' +
+                        '<option value="/admin/records">records</option>'
+                    buttons.appendChild(new_selector)
+                    const options = document.querySelectorAll('header option')
+                    console.log(options)
+                }
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr.responseText);
+            }
+        });
+    });
+</script>
+
+</html>

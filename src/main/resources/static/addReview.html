@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" type="text/css" th:href="style.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<header class="neo_in">
+  <div style="width: fit-content;">
+    <div class="center">
+      <button class="neo_in" onclick="window.location.href='/'">Home</button>
+    </div>
+  </div>
+  <div id="buttons" class="row" style="gap: 20px;">
+    <div class="center">
+      <button class="neo_in" onclick="window.location.href='/myrecords'">records</button>
+    </div>
+    <div class="center">
+      <button class="neo_in" onclick="window.location.href='/masters'">masters</button>
+    </div>
+    <div class="center">
+      <button class="neo_in" onclick="window.location.href='/services'">services</button>
+    </div>
+    <div class="center">
+      <button class="neo_in" onclick="window.location.href='/logout'">logout</button>
+    </div>
+    <div class="center">
+      <button class="neo_in" onclick="window.location.href='/addRecord'">+</button>
+    </div>
+    <div class="center">
+      <button class="neo_in" onclick="window.location.href='/reviews'">reviews</button>
+    </div>
+  </div>
+</header>
+<main>
+  <div class="column">
+    <h1 class="title">Create Review</h1>
+    <form class="neo_out" th:method="POST" th:action="@{/reviews}" th:object="${review}">
+      <div class="row">
+        <div class="column">
+          <h1 style="font-weight: bold">Service:</h1>
+          <select class="neo_out" th:field="*{serviceName}" required="required">
+            <option value="" hidden selected>Choose a service</option>
+            <option th:each="service : ${services}"
+                    th:value="${service.name}"
+                    th:text="${service.name}">
+            </option>
+          </select>
+        </div>
+        <div class="column">
+          <h1 style="font-weight: bold">Master:</h1>
+          <select class="neo_out" th:field="*{masterName}" required="required">
+            <option value="" hidden selected>Choose a master</option>
+            <option th:each="master : ${masters}"
+                    th:value="${master.name}"
+                    th:text="${master.name}">
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="column">
+        <div class="column">
+          <h1 style="font-weight: bold">Rate:</h1>
+          <input class="neo_in" type="number" name="rating" style="width: 400px" id="rating" min="1" max="5" th:field="*{rate}" required placeholder="rating">
+        </div>
+        <div class="column">
+          <h1 style="font-weight: bold">Review:</h1>
+          <textarea class="neo_in" name="review" id="review" style="height: 150px; width: 400px" th:field="*{reviewText}" required placeholder="review text"></textarea>
+        </div>
+      </div>
+      <div class="center">
+        <button class="neo_in" type="submit">Submit</button>
+      </div>
+    </form>
+  </div>
+</main>
+</body>
+<script th:inline="javascript">
+  $(document).ready(function() {
+    $('#serviceName').change(function() {
+      var serviceId = $(this).val();
+      $.ajax({
+        url: '/services/' + serviceId+'/masters',
+        type: 'GET',
+        success: function(result) {
+          var options = '';
+          $.each(result, function(index, master) {
+            options += '<option value="' + master.name + '">' + master.name + '</option>';
+          });
+          $('#masterName').html(options);
+        },
+        error: function(xhr, status, error) {
+          console.log(xhr.responseText);
+        }
+      });
+    });
+  });
+</script>
+
+</html>

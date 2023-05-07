@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <base href="/">
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+</head>
+<body style="display: flex; align-items: center; justify-content: center">
+<form class="neo_out" th:method="POST" th:action="@{/login}" th:object="${user}">
+    <div class="row">
+        <h1 class="title">Login</h1>
+        <a href="/reg">New to our Service?</a>
+    </div>
+    <input class="neo_in" type="email" th:field="*{username}" id="username" name="username" placeholder="example@example.com">
+    <input class="neo_in" type="password" th:field="*{password}" id="password" name="password" placeholder="password">
+    <div class="center">
+        <button class="neo_in" type="submit" >Submit</button>
+    </div>
+</form>
+</body>
+</html>

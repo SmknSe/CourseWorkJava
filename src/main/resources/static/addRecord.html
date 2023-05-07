@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" th:href="style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<header class="neo_in">
+    <div style="width: fit-content;">
+        <div class="center">
+            <button class="neo_in" onclick="window.location.href='/'">Home</button>
+        </div>
+    </div>
+    <div id="buttons" class="row" style="gap: 20px;">
+        <div class="center">
+            <button class="neo_in" onclick="window.location.href='/myrecords'">records</button>
+        </div>
+        <div class="center">
+            <button class="neo_in" onclick="window.location.href='/masters'">masters</button>
+        </div>
+        <div class="center">
+            <button class="neo_in" onclick="window.location.href='/services'">services</button>
+        </div>
+        <div class="center">
+            <button class="neo_in" onclick="window.location.href='/logout'">logout</button>
+        </div>
+        <div class="center">
+            <button class="neo_in" onclick="window.location.href='/addRecord'">+</button>
+        </div>
+        <div class="center">
+            <button class="neo_in" onclick="window.location.href='/reviews'">reviews</button>
+        </div>
+    </div>
+</header>
+<main>
+    <div class="column">
+        <h1 class="title">Create Record</h1>
+        <form class="neo_out" th:method="POST" th:action="@{/records}" th:object="${record}">
+            <div class="row">
+                <div class="column">
+                    <div class="column">
+                        <h1 style="font-weight: bold">Service:</h1>
+                        <select class="neo_out" th:field="*{serviceName}" required="required">
+                            <option value="" hidden selected>Choose a service</option>
+                            <option th:each="service : ${services}"
+                                    th:value="${service.name}"
+                                    th:text="${service.name}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="column">
+                        <h1 style="font-weight: bold">Master:</h1>
+                        <select class="neo_out" th:field="*{masterName}" required="required">
+                            <option value="" hidden selected>Choose a master</option>
+                            <option th:each="master : ${masters}"
+                                    th:value="${master.name}"
+                                    th:text="${master.name}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <h1 style="font-weight: bold">Date:</h1>
+                    <input type="date" id="date" name="date" th:field="*{date}" th:min="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}" required="required">
+                </div>
+                <div class="column">
+                    <h1 style="font-weight: bold">Time:</h1>
+                    <input type="time" id="time" name="time" th:field="*{time}" min="09:00" max="21:00" required="required">
+                </div>
+            </div>
+            <div class="column">
+                <h1 style="font-weight: bold">Price:</h1>
+                <p class="neo_out" id="price">0</p>
+            </div>
+            <div class="center">
+                <button class="neo_in" type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+</main>
+</body>
+<script th:inline="javascript">
+    $(document).ready(function() {
+        $('#serviceName').change(function() {
+            var serviceId = $(this).val();
+            $.ajax({
+                url: '/services/' + serviceId+'/masters',
+                type: 'GET',
+                success: function(result) {
+                    var options = '';
+                    $.each(result, function(index, master) {
+                        options += '<option value="' + master.name + '">' + master.name + '</option>';
+                    });
+                    $('#masterName').html(options);
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText);
+                }
+            });
+            for (let serv of [[${services}]]){
+                if (serv.name===serviceId){
+                    price.textContent = serv.price
+                    break
+                }
+            }
+        });
+    });
+</script>
+
+</html>

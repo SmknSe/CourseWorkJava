@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <base href="/">
+  <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body style="display: flex; align-items: center; justify-content: center">
+<form class="neo_out" th:method="POST" th:action="@{/reg}" th:object="${user}">
+  <div class="row">
+    <h1 class="title">Sign Up</h1>
+    <a href="/login">Already have an account?</a>
+  </div>
+  <input class="neo_in" type="email" th:field="*{username}" id="username" name="username"  required onkeyup="check(this)" placeholder="example@example.com">
+  <input class="neo_in" type="password" required="required" th:field="*{password}" id="password" name="password" placeholder="password">
+  <div class="center">
+    <button class="neo_in" type="submit" >Submit</button>
+  </div>
+</form>
+</body>
+<script th:inline="javascript">
+
+  function check(el){
+    console.log(el.value.toLowerCase())
+    if ([[${usernames}]].includes(el.value.toLowerCase())){
+      el.classList.add("error")
+    }
+    else if (el.classList.contains("error")){
+      el.classList.remove("error")
+    }
+  }
+  // $(document).ready(function() {
+  //   $('#email').onkeydown=function() {
+  //     var email = $(this).val();
+  //     console.log(email)
+
+  //   };
+  // });
+</script>
+</html>

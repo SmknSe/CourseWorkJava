@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="/">
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+    <title>Add a New Master or Service</title>
+</head>
+<body>
+<header class="neo_in">
+    <div style="width: fit-content;">
+        <div class="center">
+            <button class="neo_in" onclick="window.location.href='/'">Home</button>
+        </div>
+    </div>
+    <div id="buttons" class="row" style="gap: 20px;">
+        <div class="center">
+            <button class="neo_in" onclick="window.location.href='/myrecords'">records</button>
+        </div>
+        <div class="center">
+            <button class="neo_in" onclick="window.location.href='/masters'">masters</button>
+        </div>
+        <div class="center">
+            <button class="neo_in" onclick="window.location.href='/services'">services</button>
+        </div>
+        <div class="center">
+            <button class="neo_in" onclick="window.location.href='/logout'">logout</button>
+        </div>
+        <div class="center">
+            <button class="neo_in" onclick="window.location.href='/addRecord'">+</button>
+        </div>
+        <div class="center">
+            <button class="neo_in" onclick="window.location.href='/reviews'">reviews</button>
+        </div>
+    </div>
+</header>
+<main>
+    <div class="row" style="gap: 20px">
+        <div style="position: relative; width: 500px; min-height: 500px;">
+            <form class="neo_out" th:method="POST" th:action="@{/admin/masters}" th:object="${master}">
+                <div class="row">
+                    <h1 class="title">Add Master</h1>
+                    <a href="/">Back to Home</a>
+                </div>
+                <input class="neo_in" type="text" th:field="*{name}" name="name" placeholder="Name">
+                <div id="services">
+                    <input class="neo_in firstService" type="text" th:each="service : ${master.services}"
+                           th:field="*{services[__${serviceStat.index}__]}" name="specialty" placeholder="Specialty">
+                    <div class="row">
+                        <input class="neo_in" type="text" name="services[0]" placeholder="Specialty">
+                        <button class="neo_in" type="button" id="addingServiceBtn"
+                                style="width: fit-content; border-radius: 50%; aspect-ratio: 1;"
+                                onclick="addService()">+
+                        </button>
+                    </div>
+                </div>
+                <div class="center">
+                    <button class="neo_in">Submit</button>
+                </div>
+            </form>
+        </div>
+        <div style="position: relative; width: 500px; min-height: 500px;">
+            <form class="neo_out" th:method="POST" th:action="@{/admin/services}" th:object="${service}">
+                <div class="row">
+                    <h1 class="title">Add Service</h1>
+                    <a href="/">Back to Home</a>
+                </div>
+                <input class="neo_in" type="text" th:field="*{name}" name="name" placeholder="Name">
+                <input class="neo_in" type="number" min="0" th:field="*{price}" name="price" placeholder="Price">
+                <div id="masters">
+                    <input class="neo_in firstService" type="text" th:each="master : ${service.masters}"
+                           th:field="*{masters[__${masterStat.index}__]}" name="master" placeholder="Master">
+                    <div class="row">
+                        <input class="neo_in" type="text" name="masters[0]" placeholder="Master">
+                        <button class="neo_in" type="button" id="addingMasterBtn"
+                                style="width: fit-content; border-radius: 50%; aspect-ratio: 1;"
+                                onclick="addMaster()">+
+                        </button>
+                    </div>
+                </div>
+                <div class="center">
+                    <button class="neo_in">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+</body>
+<script>
+    function addService() {
+        var newIndex = services.children.length;
+        var newInput = document.createElement("input");
+        newInput.setAttribute("type", "text");
+        newInput.setAttribute("class", "neo_in");
+        newInput.setAttribute("name", "services[" + newIndex + "]");
+        newInput.setAttribute("placeholder", "Service");
+        services.appendChild(newInput);
+    }
+
+    function addMaster() {
+        var newIndex = masters.children.length;
+        var newInput = document.createElement("input");
+        newInput.setAttribute("type", "text");
+        newInput.setAttribute("class", "neo_in");
+        newInput.setAttribute("name", "masters[" + newIndex + "]");
+        newInput.setAttribute("placeholder", "Master");
+        masters.appendChild(newInput);
+    }
+</script>
+</html>

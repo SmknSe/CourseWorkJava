@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Reviews</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="neo_in">
+  <div style="width: fit-content;">
+    <div class="center">
+      <button class="neo_in" onclick="window.location.href='/'">Home</button>
+    </div>
+  </div>
+  <div id="buttons" class="row" style="gap: 20px;">
+    <div class="center">
+      <button class="neo_in" onclick="window.location.href='/myrecords'">records</button>
+    </div>
+    <div class="center">
+      <button class="neo_in" onclick="window.location.href='/masters'">masters</button>
+    </div>
+    <div class="center">
+      <button class="neo_in" onclick="window.location.href='/services'">services</button>
+    </div>
+    <div class="center">
+      <button class="neo_in" onclick="window.location.href='/logout'">logout</button>
+    </div>
+    <div class="center">
+      <button class="neo_in" onclick="window.location.href='/addRecord'">+</button>
+    </div>
+    <div class="center">
+      <button class="neo_in" onclick="window.location.href='/reviews'">reviews</button>
+    </div>
+  </div>
+</header>
+<main>
+  <div class="column">
+    <h1 class="title">Reviews</h1>
+    <form class="neo_out" style="overflow: auto; height: 600px; display: block" action="">
+      <div class="neo_in review" th:each="review : ${reviews}">
+        <div class="row">
+          <div class="row" style="justify-content: flex-start; gap: 20px">
+            <span>From</span>
+            <p class="neo_out" th:text="${review.userEmail}"></p>
+          </div>
+          <p class="neo_out" th:text="${review.rate}"></p>
+        </div>
+        <div class="row"style="justify-content: flex-start; gap: 20px">
+          <span>Service: </span>
+          <p class="neo_out" th:text="${review.serviceName}"></p>
+        </div>
+        <div class="row"style="justify-content: flex-start; gap: 20px">
+          <span>Master: </span>
+          <p class="neo_out" th:text="${review.masterName}"></p>
+        </div>
+        <textarea readonly class="neo_out" style="min-height: 100px" th:text="${review.reviewText}"></textarea>
+      </div>
+    </form>
+    <div class="center">
+      <button class="neo_button neo_in" style="font-size: 1rem" onclick="window.location.href='/add-review'">Add Review</button>
+    </div>
+  </div>
+</main>
+
+</body>
+
+</html>

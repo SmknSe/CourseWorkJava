@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <base href="/">
+  <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+</head>
+<body style="display: flex; align-items: center; justify-content: center">
+<form class="neo_out" th:method="POST" th:action="@{/confirm}">
+  <div class="row">
+    <h1 class="title">Enter code from email</h1>
+  </div>
+  <input class="neo_in" type="text" id="code" name="code" placeholder="Enter code">
+  <div class="center">
+    <button class="neo_in" type="submit" >Submit</button>
+  </div>
+</form>
+</body>
+</html>

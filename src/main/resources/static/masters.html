@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>User List</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<header class="neo_in">
+  <div style="width: fit-content;">
+    <div class="center">
+      <button class="neo_in" onclick="window.location.href='/'">Home</button>
+    </div>
+  </div>
+  <div id="buttons" class="row" style="gap: 20px;">
+    <div class="center">
+      <button class="neo_in" onclick="window.location.href='/myrecords'">records</button>
+    </div>
+    <div class="center">
+      <button class="neo_in" onclick="window.location.href='/masters'">masters</button>
+    </div>
+    <div class="center">
+      <button class="neo_in" onclick="window.location.href='/services'">services</button>
+    </div>
+    <div class="center">
+      <button class="neo_in" onclick="window.location.href='/logout'">logout</button>
+    </div>
+    <div class="center">
+      <button class="neo_in" onclick="window.location.href='/addRecord'">+</button>
+    </div>
+    <div class="center">
+      <button class="neo_in" onclick="window.location.href='/reviews'">reviews</button>
+    </div>
+  </div>
+</header>
+<main>
+  <div class="column" style="gap: 20px">
+    <h1>Masters</h1>
+    <table class="neo_in">
+      <thead>
+      <tr>
+        <th class="neo_out">Name</th>
+        <th class="neo_out">Services</th>
+        <th class="neo_out">Rate</th>
+        <th th:if="${role[0]['authority']=='ADMIN'}" class="neo_out">Delete</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="master : ${masters}">
+        <td class="neo_out" th:text="${master.name}"></td>
+        <td class="neo_out" th:text="${master.services}"></td>
+        <td class="neo_out" th:text="${master.rate}"></td>
+        <td th:if="${role[0]['authority']=='ADMIN'}" class="neo_out center" style="width: initial !important;">
+          <span style="color: red; text-align: center; cursor:pointer;" th:attr="onclick=|removeMaster('${master.id}')|">x</span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+</body>
+<script th:inline="javascript">
+  console.log([[${role}]][0]['authority'])
+  function removeMaster(master){
+    const f = confirm("Are u sure?");
+    if (f){
+      $.ajax({
+        url: '/masters/'+master,
+        type: 'DELETE',
+        success: function(result) {
+          window.location.reload()
+        },
+        error: function(xhr, status, error) {
+          console.log(xhr.responseText);
+        }
+      });
+    }
+  }
+</script>
+</html>
